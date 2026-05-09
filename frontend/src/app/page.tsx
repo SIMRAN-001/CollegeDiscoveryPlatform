@@ -5,8 +5,7 @@ import CollegeCard from "@/components/CollegeCard";
 
 export default async function Home() {
   // ✅ FIXED
-  const colleges = await getColleges({ limit: "3" }).catch(() => []);
-
+  const colleges: any[] = await getColleges({ limit: "3" });
   return (
     <div>
       {/* Hero */}
