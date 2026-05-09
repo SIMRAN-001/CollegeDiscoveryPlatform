@@ -11,8 +11,11 @@ app.use(express.json());
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
- ssl: false,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
+
 // ─── DB INIT ────────────────────────────────────────────────────────────────
 async function initDB() {
   await pool.query(`
