@@ -163,11 +163,14 @@ app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
 // ─── START ───────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 4000;
-initDB()
-  .then(() => {
-    app.listen(PORT, () => console.log(`🚀 Backend running on port ${PORT}`));
-  })
-  .catch((err) => {
-    console.error("DB init failed:", err);
-    process.exit(1);
-  });
+
+app.listen(PORT, async () => {
+  console.log(`🚀 Backend running on port ${PORT}`);
+
+  try {
+    await initDB();
+    console.log("✅ Database initialized");
+  } catch (err) {
+    console.error("⚠️ DB init warning (non-fatal):", err);
+  }
+});
