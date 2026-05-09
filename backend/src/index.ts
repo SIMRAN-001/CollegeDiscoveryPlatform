@@ -16,8 +16,7 @@ const pool = new Pool({
     process.env.NODE_ENV === "production"
       ? { rejectUnauthorized: false }
       : false,
-  max: 5,
-  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
 });
 
 // ─── SEED DATA ───────────────────────────────────────────────────────
@@ -175,7 +174,12 @@ app.get("/states", async (_req, res) => {
 const PORT = process.env.PORT || 4000;
 
 async function startServer() {
-  await initDB();
+  try {
+    await initDB();
+    console.log("✅ Database ready");
+  } catch (err: any) {
+    console.error("❌ initDB error:", err.message);
+  }
 
   app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
