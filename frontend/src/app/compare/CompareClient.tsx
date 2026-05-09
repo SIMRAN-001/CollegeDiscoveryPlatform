@@ -45,8 +45,20 @@ export default function CompareClient() {
   const idsParam = searchParams.get("ids");
 
   useEffect(() => {
-    getColleges({ limit: "50" }).then((d) => setAllColleges(d.colleges));
-  }, []);
+  getColleges({ limit: "50" })
+    .then((d) => {
+      if (Array.isArray(d)) {
+        setAllColleges(d);
+      } else if (Array.isArray(d?.colleges)) {
+        setAllColleges(d.colleges);
+      } else {
+        setAllColleges([]);
+      }
+    })
+    .catch(() => {
+      setAllColleges([]);
+    });
+}, []);
 
   useEffect(() => {
     if (!idsParam) return;
