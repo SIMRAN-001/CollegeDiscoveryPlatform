@@ -71,6 +71,14 @@ async function seedColleges() {
 
 // ─── ROUTES ─────────────────────────────────────────────────────────────────
 
+app.get("/", (_req, res) => {
+  res.json({
+    message: "College Discovery API is running 🚀",
+    endpoints: ["/health", "/colleges", "/compare", "/states"]
+  });
+});
+
+
 // GET /colleges - list with search + filter
 app.get("/colleges", async (req, res) => {
   try {
