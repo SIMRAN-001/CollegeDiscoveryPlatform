@@ -107,10 +107,15 @@ app.get("/colleges", async (_req, res) => {
     const result = await pool.query(
       "SELECT * FROM colleges ORDER BY rating DESC"
     );
+
     res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server error" });
+  } catch (err: any) {
+    console.error("COLLEGES ROUTE ERROR:", err.message);
+
+    res.status(500).json({
+      error: "Database query failed",
+      details: err.message,
+    });
   }
 });
 
