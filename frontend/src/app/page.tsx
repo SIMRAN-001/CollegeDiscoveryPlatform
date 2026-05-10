@@ -4,11 +4,17 @@ import { getColleges } from "@/lib/api";
 import CollegeCard from "@/components/CollegeCard";
 
 export default async function Home() {
-  const data = await getColleges({ limit: "3" }).catch(() => null);
+  let colleges: any[] = [];
 
-const colleges = Array.isArray(data?.colleges)
-  ? data.colleges
-  : [];
+  try {
+    const data = await getColleges({ limit: "3" });
+
+    if (data && Array.isArray(data.colleges)) {
+      colleges = data.colleges;
+    }
+  } catch (error) {
+    console.log("Failed to load colleges:", error);
+  }
 
   return (
     <div>
