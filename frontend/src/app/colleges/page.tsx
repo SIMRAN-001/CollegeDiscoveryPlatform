@@ -46,12 +46,20 @@ export default function CollegesPage() {
     if (fee.min) params.min_fees = fee.min;
     if (fee.max) params.max_fees = fee.max;
 
-    getColleges(params).then((data) => {
-      setColleges(data.colleges);
-      setTotal(data.total);
-      setTotalPages(data.totalPages);
-      setLoading(false);
-    });
+    getColleges(params)
+  .then((data) => {
+    setColleges(data?.colleges || []);
+    setTotal(data?.total || 0);
+    setTotalPages(data?.totalPages || 1);
+  })
+  .catch(() => {
+    setColleges([]);
+    setTotal(0);
+    setTotalPages(1);
+  })
+  .finally(() => {
+    setLoading(false);
+  });
   }, [search, selectedState, selectedCourse, selectedFee, page]);
 
   const toggleCompare = (college: College) => {
