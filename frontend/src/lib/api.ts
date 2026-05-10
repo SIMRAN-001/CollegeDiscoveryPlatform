@@ -1,4 +1,6 @@
-const API = process.env.NEXT_PUBLIC_API_URL;
+const API =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://collegediscoveryplatform-gxs5.onrender.com";
 
 export interface College {
   id: number;
@@ -25,14 +27,33 @@ export interface CollegesResponse {
 }
 
 export async function getColleges(params: Record<string, string> = {}): Promise<CollegesResponse> {
-  const qs = new URLSearchParams(params).toString();
-  const res = await fetch(`${API}/colleges?${qs}`, { cache: "no-store" });
+  try {
+    const qs = new URLSearchParams(params).toString();
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch colleges");
+    const res = await fetch(`${API}/colleges?${qs}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      return {
+        colleges: [],
+        total: 0,
+        page: 1,
+        totalPages: 1,
+      };
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("API ERROR:", error);
+
+    return {
+      colleges: [],
+      total: 0,
+      page: 1,
+      totalPages: 1,
+    };
   }
-
-  return res.json();
 }
 
 export async function getCollege(id: string): Promise<College> {
