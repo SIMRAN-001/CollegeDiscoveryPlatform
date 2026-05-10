@@ -4,14 +4,11 @@ import { getColleges } from "@/lib/api";
 import CollegeCard from "@/components/CollegeCard";
 
 export default async function Home() {
-  const data = await getColleges({ limit: "3" }).catch(() => ({
-  colleges: [],
-  total: 0,
-  page: 1,
-  totalPages: 1,
-}));
+  const data = await getColleges({ limit: "3" }).catch(() => null);
 
-const colleges = data.colleges;
+const colleges = Array.isArray(data?.colleges)
+  ? data.colleges
+  : [];
 
   return (
     <div>
