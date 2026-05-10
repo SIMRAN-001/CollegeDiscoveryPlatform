@@ -5,10 +5,13 @@ import CollegeCard from "@/components/CollegeCard";
 
 export default async function Home() {
   const data = await getColleges({ limit: "3" }).catch(() => ({
-    colleges: [],
-  }));
+  colleges: [],
+  total: 0,
+  page: 1,
+  totalPages: 1,
+}));
 
-  const colleges = data.colleges || [];
+const colleges = data.colleges;
 
   return (
     <div>
